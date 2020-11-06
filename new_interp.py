@@ -15,7 +15,11 @@ with open("new_main.sp") as file:
         x = com.split(":")
         x.reverse()
         z = 0
+        is_comment = False
         for i in x:
+            if "g_com" in i:
+                is_comment = True
+                break
             if "=" in i:
                 new_var = i.split("=")
                 # for var in variables:
@@ -41,6 +45,8 @@ with open("new_main.sp") as file:
 
 
         for i in objects:
+            if is_comment == True:
+                break
             if "g_asg" in i:
                 exper = objects[i][1].strip()
                 if (std.oper_list[0] in exper or std.oper_list[1] in exper or std.oper_list[2] in exper or std.oper_list[3] in exper) and not "'" in exper:
