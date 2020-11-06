@@ -55,7 +55,7 @@ with open("new_main.sp") as file:
                             exper = exper.replace(var, variables[var])
                     exper = str(std.express(exper).solve())
                 if exper == "g_in":
-                    exper = input("[user]")
+                    exper = input("")
                 variables[objects[i][0].strip()] = exper
             if "g_exp" in i:
                 working = i.replace("g_exp", "")

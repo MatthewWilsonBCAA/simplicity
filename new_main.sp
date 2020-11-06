@@ -11,7 +11,7 @@ firvar = 3 + 3
 secvar = 3
 
 c// doesn't allow for one expression and a number to be worked with yet
-total = (firvar + secvar) / (2+0)
+total = (firvar + secvar) / (2)
 c// the % symbol is used to denote when you want to use a variable's value
 g_pr:The average of %firvar% and %secvar% is %total%.
 g_pr:What is your name?

@@ -52,7 +52,7 @@ class express():
         self.op = ""
         seen_left = False
         seen_paren = False
-        for i in info:
+        for i in info:              
             if repr_float(i) or '(' in i or ')' in i or '.' in i:
                 if i == '(':
                     seen_paren = True
@@ -72,11 +72,11 @@ class express():
                 else:
                     self.left += i
             
-            if repr_str(self.left) and '(' in self.left and ')' in self.left:
+            if repr_str(self.left) and '(' in self.left and ')' in self.left and not repr_float(self.left):
                 self.left = self.left.replace('(', " ")
                 self.left = self.left.replace(')', " ")
                 self.left = express(self.left)
-            if repr_str(self.right) and '(' in self.right and ')' in self.right:
+            if repr_str(self.right) and '(' in self.right and ')' in self.right and not repr_float(self.right):
                 self.right = self.right.replace('(', " ")
                 self.right = self.right.replace(')', " ")
                 self.right = express(self.right) 
@@ -85,11 +85,24 @@ class express():
         if repr_float(self.left) == True or repr_str(self.right):
             l = float(self.left)
         else:
-            l = self.left.solve()
+            sup = False
+            for i in oper_list:
+                if i in self.left.initial:
+                    l = self.left.solve()
+                    sup = True
+            if not sup:
+                l = float(self.left.initial)
         if repr_float(self.right) == True or repr_str(self.right):
             r = float(self.right)
         else:
-            r = self.right.solve()
+            sup = False
+            for i in oper_list:
+                if i in self.right.initial:
+                    r = self.right.solve()
+                    sup = True
+            if not sup:
+                r = float(self.right.initial)
+            
         if self.op == "+":
             return l + r
         elif self.op == "-":
