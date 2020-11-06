@@ -53,7 +53,7 @@ class express():
         seen_left = False
         seen_paren = False
         for i in info:
-            if repr_float(i) or '(' in i or ')' in i:
+            if repr_float(i) or '(' in i or ')' in i or '.' in i:
                 if i == '(':
                     seen_paren = True
                 elif i == ')':
@@ -82,11 +82,11 @@ class express():
                 self.right = express(self.right) 
     def solve(self):
         self.split_it()
-        if repr_float(self.left) == True:
+        if repr_float(self.left) == True or repr_str(self.right):
             l = float(self.left)
         else:
             l = self.left.solve()
-        if repr_float(self.right) == True:
+        if repr_float(self.right) == True or repr_str(self.right):
             r = float(self.right)
         else:
             r = self.right.solve()
