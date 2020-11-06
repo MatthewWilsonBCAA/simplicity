@@ -17,7 +17,7 @@ with open("new_main.sp") as file:
         z = 0
         is_comment = False
         for i in x:
-            if "g_com" in i:
+            if "c//" in i:
                 is_comment = True
                 break
             if "=" in i:
