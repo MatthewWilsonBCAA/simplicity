@@ -54,6 +54,8 @@ with open("new_main.sp") as file:
                         if var in exper:
                             exper = exper.replace(var, variables[var])
                     exper = str(std.express(exper).solve())
+                if exper == "g_in":
+                    exper = input("[user]")
                 variables[objects[i][0].strip()] = exper
             if "g_exp" in i:
                 working = i.replace("g_exp", "")
@@ -70,7 +72,9 @@ with open("new_main.sp") as file:
                                 i = i.strip()
                                 if i == var:
                                     list_string[z] = variables[var] 
-                    print(''.join(list_string))
+                        print(''.join(list_string))
+                    else:
+                        print(objects[i])
                 except:             
                     print(objects[i])
             elif "g_end" in i:
