@@ -22,6 +22,22 @@ def g_pr(i):
             print(objects[i])
     except:             
         print(objects[i])
+def g_asg(i):
+    exper = objects[i][1].strip()
+    if (std.oper_list[0] in exper or std.oper_list[1] in exper or std.oper_list[2] in exper or std.oper_list[3] in exper) and not "'" in exper:
+        for var in variables:
+            if var in exper:
+                exper = exper.replace(var, variables[var])
+        exper = str(std.express(exper).solve())
+    if exper == "g_in":
+        exper = input("")
+    variables[objects[i][0].strip()] = exper
+
+def g_exp(i):
+    working = i.replace("g_exp", "")
+    working = str(int(working) + 1)
+    if objects["g_pr" + working] == objects[i].initial:
+         objects["g_pr" + working] = objects[i].solve()
 
 objects = {}
 blocks = {} # if this works right, this *should* allow me to store blocks of codes into
@@ -45,10 +61,10 @@ with open("new_main.sp") as file:
             if "c//" in i:
                 is_comment = True
                 break
-            # if "g_if" in i:
-            #     objects["g_if" + str(z)] = x
-            #     blocks["g_if" + str(z)] = x
-            #     block_count += 1
+            if "g_if" in i:
+                objects["g_if" + str(z)] = x
+                blocks["g_if" + str(z)] = x
+                block_count += 1
             if "=" in i and not "==" in i:
                 new_var = i.split("=")
                 # for var in variables:
@@ -77,27 +93,17 @@ with open("new_main.sp") as file:
             if is_comment == True:
                 break
             if "g_asg" in i:
-                exper = objects[i][1].strip()
-                if (std.oper_list[0] in exper or std.oper_list[1] in exper or std.oper_list[2] in exper or std.oper_list[3] in exper) and not "'" in exper:
-                    for var in variables:
-                        if var in exper:
-                            exper = exper.replace(var, variables[var])
-                    exper = str(std.express(exper).solve())
-                if exper == "g_in":
-                    exper = input("")
-                variables[objects[i][0].strip()] = exper
+                g_asg(i)
             # if "g_if" in i:
             #     use_block = blocks[i]
             #     print(use_block)
             #     # in_block = 
             if "g_exp" in i:
-                working = i.replace("g_exp", "")
-                working = str(int(working) + 1)
-                if objects["g_pr" + working] == objects[i].initial:
-                    objects["g_pr" + working] = objects[i].solve()
+                g_exp(i)
             elif "g_pr" in i:
                 g_pr(i)
             elif "g_end" in i:
                 exit()
+                
         x = []
         objects = {}
