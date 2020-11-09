@@ -7,20 +7,49 @@ def repr_float(x):
     except:
         return False
 
+def g_pr(i):
+    try:
+        if "%" in objects[i]:
+            list_string = objects[i].split("%")
+            for var in variables:
+                for i in list_string:
+                    z = list_string.index(i)
+                    i = i.strip()
+                    if i == var:
+                        list_string[z] = variables[var] 
+            print(''.join(list_string))
+        else:
+            print(objects[i])
+    except:             
+        print(objects[i])
+
 objects = {}
+blocks = {} # if this works right, this *should* allow me to store blocks of codes into
+#a dictionary of lists, then execute later
+in_block = ''
+use_block = None
+block_count = 0
 variables = {}
+
 with open("new_main.sp") as file:
     while True:
-        com = file.readline()
-        x = com.split(":")
-        x.reverse()
+        if in_block == '':
+            com = file.readline()
+            x = com.split(":")
+            x.reverse()
+        else:
+            x = use_block
         z = 0
         is_comment = False
         for i in x:
             if "c//" in i:
                 is_comment = True
                 break
-            if "=" in i:
+            # if "g_if" in i:
+            #     objects["g_if" + str(z)] = x
+            #     blocks["g_if" + str(z)] = x
+            #     block_count += 1
+            if "=" in i and not "==" in i:
                 new_var = i.split("=")
                 # for var in variables:
                 #     for temp in new_var:
@@ -57,26 +86,17 @@ with open("new_main.sp") as file:
                 if exper == "g_in":
                     exper = input("")
                 variables[objects[i][0].strip()] = exper
+            # if "g_if" in i:
+            #     use_block = blocks[i]
+            #     print(use_block)
+            #     # in_block = 
             if "g_exp" in i:
                 working = i.replace("g_exp", "")
                 working = str(int(working) + 1)
                 if objects["g_pr" + working] == objects[i].initial:
                     objects["g_pr" + working] = objects[i].solve()
             elif "g_pr" in i:
-                try:
-                    if "%" in objects[i]:
-                        list_string = objects[i].split("%")
-                        for var in variables:
-                            for i in list_string:
-                                z = list_string.index(i)
-                                i = i.strip()
-                                if i == var:
-                                    list_string[z] = variables[var] 
-                        print(''.join(list_string))
-                    else:
-                        print(objects[i])
-                except:             
-                    print(objects[i])
+                g_pr(i)
             elif "g_end" in i:
                 exit()
         x = []
